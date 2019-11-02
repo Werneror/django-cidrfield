@@ -1,7 +1,7 @@
 .. -*- restructuredtext -*-
 
 django-cidrfield
-===============
+================
 
 ``cidrfield`` provides a model field for 
 `django <https://www.djangoproject.com>`_
