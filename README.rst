@@ -42,7 +42,7 @@ Then you can store a ip network like the following::
 	MyModel(ip_network='192.168.1.0/24').save()
 
 
-Then you can store a ip network like the following::
+And you can query a ip network like the following::
     
     
 	MyModel.objects.filter(ip_network__contains='192.168.1.1')
