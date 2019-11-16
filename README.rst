@@ -45,6 +45,33 @@ Then you can store a ip network like the following::
 And you can query a ip network like the following::
     
     
+	MyModel.objects.filter(ip_network='192.168.1.0/24')
 	MyModel.objects.filter(ip_network__contains='192.168.1.1')
 	MyModel.objects.filter(ip_network__in='192.168.0.0/16')
+	MyModel.objects.filter(ip_network__in=['192.168.0.0/16', '10.10.0.0/16'])
 
+
+If you use `DjangoQL <https://pypi.org/project/djangoql/>`_, you can use ``CIDRQLSchema`` like the following::
+    
+    
+	from django.contrib import admin
+	from djangoql.admin import DjangoQLSearchMixin
+	from cidrfield.schemas import CIDRQLSchema
+	from .models import MyModel
+	
+	
+	@admin.register(MyModel)
+	class MyModelAdmin(DjangoQLSearchMixin, admin.ModelAdmin):
+	    list_display = ['ip_network']
+	    search_fields = ('ip_network', )
+	    djangoql_schema = CIDRQLSchema
+
+
+Changelog
+---------
+
+0.2.0
+>>>>>
+
+- Add support for Djangoql.
+- Fixed the bug about ``__in`` query not supporting array.

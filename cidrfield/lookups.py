@@ -18,4 +18,8 @@ class IpIn(Lookup):
         lhs, lhs_params = self.process_lhs(compiler, connection)
         rhs, rhs_params = self.process_rhs(compiler, connection)
         params = lhs_params + rhs_params
-        return '%s like %s' % (lhs, rhs), params
+        condition = '%s like %s' % (lhs, rhs)
+        if isinstance(params[0], list):
+            return ' or '.join([condition] * len(params[0])), tuple(params[0])
+        else:
+            return condition, params

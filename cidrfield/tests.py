@@ -33,11 +33,13 @@ class IPNetworkFieldTests(TestCase):
     def test_ipv4_in(self):
         DummyModel.objects.create(field='10.10.10.0/24')
         self.assertEqual(DummyModel.objects.filter(field__in='10.10.0.0/16').count(), 1)
+        self.assertEqual(DummyModel.objects.filter(field__in=['10.10.0.0/16', '10.10.10.0/30']).count(), 1)
         self.assertEqual(DummyModel.objects.filter(field__in='10.10.10.0/30').count(), 0)
 
     def test_ipv6_in(self):
         DummyModel.objects.create(field='fec4::/16')
         self.assertEqual(DummyModel.objects.filter(field__in='fec0::/10').count(), 1)
+        self.assertEqual(DummyModel.objects.filter(field__in=['fec0::/10', 'fec0::1']).count(), 1)
         self.assertEqual(DummyModel.objects.filter(field__in='fec0::1').count(), 0)
 
     def test_ipv4_contains(self):

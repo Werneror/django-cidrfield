@@ -37,11 +37,13 @@ class IPNetworkField(models.Field):
         string_network = string_ip + '/{}'.format(len(value))
         return ipaddress.ip_network(string_network)
 
-    def get_prep_value(self, value):
+    def _get_prep_value(self, value):
+        if value is None or value == '':
+            return None
         try:
             value = self.to_python(value)
         except ValidationError:
-            return None
+            return str()
         if isinstance(value, ipaddress.IPv4Network):
             max_length = ipaddress.IPV4LENGTH
             prefix = 'IPv4'
@@ -55,8 +57,11 @@ class IPNetworkField(models.Field):
         bin_network = prefix + bin_ip[:value.prefixlen] + '%'
         return bin_network
 
-    def get_prep_lookup(self, lookup_type, value):
-        return self.get_prep_value(value)
+    def get_prep_value(self, value):
+        if isinstance(value, list):
+            return [self._get_prep_value(v) for v in value]
+        else:
+            return self._get_prep_value(value)
 
     def get_lookup(self, lookup_name):
         if lookup_name == 'contains' or lookup_name == 'icontains':
