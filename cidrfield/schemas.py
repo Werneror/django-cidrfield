@@ -35,4 +35,4 @@ class CIDRQLSchema(DjangoQLSchema):
         if isinstance(field, IPNetworkField):
             return DjangoQLIPNetworkField
         else:
-        	return super().get_field_cls(field)
+            return super().get_field_cls(field)
