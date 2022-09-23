@@ -25,10 +25,10 @@ class IPNetworkField(models.Field):
             raise ValidationError(error)
 
     def from_db_value(self, value, expression, connection):
-        if value is None or len(value.split()) < 5:
+        if value is None or len(value.strip()) < 5:
             return None
         prefix = value[:4]
-        value = value.split()[4:-1]    # remove prefix and %
+        value = value.strip()[4:-1]    # remove prefix and %
         if prefix == 'IPv4':
             max_length = ipaddress.IPV4LENGTH
         else:
