@@ -61,6 +61,10 @@ class MyModelAdmin(DjangoQLSearchMixin, admin.ModelAdmin):
 
 ## Changelog
 
+### 0.2.1
+
+- Fix IPv6 with integers less than 2**32 being detected as IPv4.
+
 ### 0.2.0
 
 - Add support for Djangoql.

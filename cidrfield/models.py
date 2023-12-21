@@ -31,9 +31,11 @@ class IPNetworkField(models.Field):
         value = value.strip()[4:-1]    # remove prefix and %
         if prefix == 'IPv4':
             max_length = ipaddress.IPV4LENGTH
+            ip_class = ipaddress.IPv4Address
         else:
             max_length = ipaddress.IPV6LENGTH
-        string_ip = ipaddress.ip_address(int(value + '0' * (max_length-len(value)), 2)).__str__()
+            ip_class = ipaddress.IPv6Address
+        string_ip = ip_class(int(value + '0' * (max_length-len(value)), 2)).__str__()
         string_network = string_ip + '/{}'.format(len(value))
         return ipaddress.ip_network(string_network)
 

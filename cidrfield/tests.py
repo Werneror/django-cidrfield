@@ -56,6 +56,14 @@ class IPNetworkFieldTests(TestCase):
         self.assertEqual(DummyModel.objects.filter(field__contains='fec4::1').count(), 0)
         self.assertEqual(DummyModel.objects.filter(field__icontains='fec4::1').count(), 0)
 
+    def test_ipv6_addr_any(self):
+        DummyModel.objects.create(field='0:0:0:0:0:0:0:0/0')
+        self.assertEqual(DummyModel.objects.get(field='0:0:0:0:0:0:0:0/0').field, ipaddress.IPv6Network('0:0:0:0:0:0:0:0/0'))
+
+    def test_ipv6_addr_loopback(self):
+        DummyModel.objects.create(field='0:0:0:0:0:0:0:1/128')
+        self.assertEqual(DummyModel.objects.get(field='0:0:0:0:0:0:0:1/128').field, ipaddress.IPv6Network('0:0:0:0:0:0:0:1/128'))
+
     def test_required_values(self):
         with self.assertRaises(IntegrityError):
             # non-null field should require value
