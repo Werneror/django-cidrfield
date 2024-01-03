@@ -70,6 +70,11 @@ If you use `DjangoQL <https://pypi.org/project/djangoql/>`_, you can use ``CIDRQ
 Changelog
 ---------
 
+0.2.1
+>>>>>
+
+- Fix IPv6 with integers less than 2**32 being detected as IPv4.
+
 0.2.0
 >>>>>
 
